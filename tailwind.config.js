@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'card': '#0c0c0c'
+        'card': '#121212',
+        'secondary': '#b3b3b3'
       },
       gridTemplateRows: {
         'layout': 'auto 4.5rem'
