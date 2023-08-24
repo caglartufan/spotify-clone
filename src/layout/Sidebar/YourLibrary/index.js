@@ -18,6 +18,7 @@ import Button from '../../../components/UI/Button';
 import Icon from '../../../components/UI/Icon';
 
 import LibraryList from './LibraryList';
+import Scrollable from '../../../components/UI/Scrollable';
 
 const libraryItems = [
     {
@@ -72,8 +73,8 @@ const libraryItems = [
 
 const YourLibrary = props => {
     return (
-        <Card className="flex-auto">
-            <div className="flex flex-col gap-y-4 px-4 py-2">
+        <Card className="flex-auto flex flex-col overflow-y-auto">
+            <div className="flex flex-col gap-y-4 px-4 py-2 shadow-standart z-10">
                 <header className="flex items-center">
                     <div className="flex-1">
                         <Button className="flex items-center gap-x-3 h-10 py-1 px-2">
@@ -104,7 +105,7 @@ const YourLibrary = props => {
                     </Button>
                 </div>
             </div>
-            <div className="h-[440px] overflow-y-scroll px-2 pb-2">
+            <Scrollable className="px-2 pb-2">
                 <div className="flex justify-between pt-0.5 px-2">
                     <Button rounded>
                         <Icon component={SearchIcon} width={16} height={16} />
@@ -119,7 +120,7 @@ const YourLibrary = props => {
                 <div>
                     <LibraryList items={libraryItems} />
                 </div>
-            </div>
+            </Scrollable>
         </Card>
     );
 };
