@@ -14,23 +14,23 @@ const Scrollable = props => {
     }
 
     const mouseOverHandler = useCallback(() => {
-        const classList = scrollableRef.current.classList;
+        // const classList = scrollableRef.current.classList;
 
-        if(classList.contains('scrollable--out')) {
-            scrollableRef.current.classList.remove('scrollable--out');
-        }
+        // if(classList.contains('scrollable--out')) {
+        //     scrollableRef.current.classList.remove('scrollable--out');
+        // }
 
-        scrollableRef.current.classList.add('scrollable--over');
+        // scrollableRef.current.classList.add('scrollable--over');
     }, []);
 
     const mouseOutHandler = useCallback(() => {
-        const classList = scrollableRef.current.classList;
+        // const classList = scrollableRef.current.classList;
 
-        if(classList.contains('scrollable--over')) {
-            scrollableRef.current.classList.remove('scrollable--over');
-        }
+        // if(classList.contains('scrollable--over')) {
+        //     scrollableRef.current.classList.remove('scrollable--over');
+        // }
 
-        scrollableRef.current.classList.add('scrollable--out');
+        // scrollableRef.current.classList.add('scrollable--out');
     }, []);
 
     return (
