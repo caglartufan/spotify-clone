@@ -21,7 +21,7 @@ module.exports = {
         'library-cover': '0 4px 60px rgba(0, 0, 0, .5)'
       },
       gridTemplateRows: {
-        'layout': 'calc(100vh - 4.5rem) 4.5rem'
+        'layout': 'calc(100% - 4.5rem - .5rem) 4.5rem'
       },
       gridTemplateColumns: {
         'layout': '20rem auto'
