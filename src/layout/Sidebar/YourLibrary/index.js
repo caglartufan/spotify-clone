@@ -111,7 +111,7 @@ const YourLibrary = props => {
                         <Icon component={SearchIcon} width={16} height={16} />
                     </Button>
                     <div>
-                        <Button className="flex items-center gap-x-2 h-8 ms-2 ps-3 pe-2">
+                        <Button className="flex items-center gap-x-2 h-8 ms-2 ps-3 pe-2 active:!text-white">
                             <span className="text-sm">Recents</span>
                             <Icon component={CaretDownIcon} />
                         </Button>

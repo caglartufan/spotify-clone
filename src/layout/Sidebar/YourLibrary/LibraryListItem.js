@@ -23,7 +23,7 @@ const LibraryListItem = props => {
 
     return (
         <li key={item.title}>
-            <div className="flex gap-x-3 gap-y-2 min-h-[56px] rounded-md p-2 cursor-pointer hover:bg-highlight">
+            <div className="flex gap-x-3 gap-y-2 min-h-[56px] rounded-md p-2 cursor-pointer hover:bg-highlight active:bg-tinted">
                 <div className="h-12 w-12 shadow-library-cover rounded-sm overflow-hidden">
                     <img src={item.coverImage} alt={item.title} />
                 </div>
