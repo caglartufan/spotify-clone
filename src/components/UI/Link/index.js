@@ -1,6 +1,8 @@
 const Link = props => {
     const {
         active,
+        block,
+        underline,
         className: customClassName,
         children,
         ...linkProps
@@ -10,6 +12,14 @@ const Link = props => {
 
     if(active) {
         className = 'text-white';
+    }
+
+    if(block) {
+        className = 'block';
+    }
+
+    if(underline) {
+        className = 'text-white hover:underline';
     }
 
     if(customClassName) {
