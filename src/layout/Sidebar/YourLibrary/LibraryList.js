@@ -8,7 +8,7 @@ const LibraryList = props => {
     return (
         <ul>
             {items.map(
-                item => <LibraryListItem item={item} />
+                item => <LibraryListItem item={item} key={item.type + '-' + item.title} />
             )}
         </ul>
     );

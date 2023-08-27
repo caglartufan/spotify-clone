@@ -10,7 +10,7 @@ const Button = props => {
     let className = 'transition ease-linear duration-200';
 
     if(tinted) {
-        className = `text-white text-sm leading-6 px-3 py-1 rounded-4xl bg-tinted hover:bg-tinted-highlight ${className}`;
+        className = `text-white text-sm leading-6 px-3 py-1 rounded-4xl bg-tinted hover:bg-tinted-highlight active:bg-tinted-press ${className}`;
     } else {
         className = `text-secondary hover:text-white active:text-secondary ${className}`;
     }

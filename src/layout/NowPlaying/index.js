@@ -16,9 +16,13 @@ import iHateYouILoveYouImage from '../../assets/images/i-hate-you-i-love-you.jfi
 import Button from '../../components/UI/Button';
 import Icon from '../../components/UI/Icon';
 import Link from '../../components/UI/Link';
+import ProgressBar from '../../components/UI/ProgressBar';
 
 const NowPlaying = props => {
     const [isPlaying, setIsPlaying] = useState(false);
+    const nowPlayingCurrentDuration = 17;
+    const nowPlayingTotalDuration = 135;
+    const nowPlayingPercantage = ((nowPlayingCurrentDuration / nowPlayingTotalDuration) * 100) + '%';
 
     const togglePlayModeHandler = useCallback(() => {
         setIsPlaying(prevState => !prevState);
@@ -33,7 +37,7 @@ const NowPlaying = props => {
                             <Link href="/playlist/daily-mix-4" block>
                                 <img src={iHateYouILoveYouImage} alt="I Hate You I love You" className="h-14 w-14" />
                             </Link>
-                            <Button className="flex justify-center items-center absolute top-[5px] right-[5px] !text-white bg-black/70 h-6 w-6 p-0 opacity-0 rounded-full group-hover:opacity-100 hover:bg-black/80 hover:scale-110 transition-none">
+                            <Button className="flex justify-center items-center absolute top-[5px] right-[5px] !text-white bg-black/70 h-6 w-6 p-0 opacity-0 rounded-full cursor-default group-hover:opacity-100 hover:bg-black/80 hover:scale-110 transition-none">
                                 <Icon component={AngleUpIcon}/>
                             </Button>
                         </div>
@@ -41,7 +45,7 @@ const NowPlaying = props => {
                             <Link href="/album/i-hate-you-i-love-you" className="text-sm" underline>
                                 I Hate You I Love You
                             </Link>
-                            <Link href="/artist/dvrst" className="text-[.6875rem] !text-secondary hover:!text-white" underline>
+                            <Link href="/artist/dvrst" className="text-2xs !text-secondary hover:!text-white" underline>
                                 DVRST
                             </Link>
                         </div>
@@ -49,7 +53,7 @@ const NowPlaying = props => {
                             <Button className="!text-bright-accent px-2 hover:scale-[1.04] active:!text-neutral-400 active:scale-100 active:opacity-70">
                                 <Icon component={HeartFullIcon} />
                             </Button>
-                            <Button className="px-2">
+                            <Button className="px-2 cursor-default">
                                 <Icon component={PictureInPictureIcon} />
                             </Button>
                         </div>
@@ -85,17 +89,21 @@ const NowPlaying = props => {
                                 </Button>
                             </div>
                         </div>
-                        <div>
-                            <div>
-                                <div>
-                                    0:17
-                                </div>
-                                <div>
-
-                                </div>
-                                <div>
-                                    2:15
-                                </div>
+                        <div
+                            className="flex items-center gap-x-2"
+                            style={{ '--playback-percentage': nowPlayingPercantage }}
+                        >
+                            <div className="min-w-[40px] text-2xs text-secondary text-right">
+                                0:17
+                            </div>
+                            <ProgressBar
+                                currentValue={nowPlayingCurrentDuration}
+                                maxValue={nowPlayingTotalDuration}
+                                initialProgressValue={nowPlayingPercantage}
+                                progressVariable="--playback-percentage"
+                            />
+                            <div className="min-w-[40px] text-2xs text-secondary text-left">
+                                2:15
                             </div>
                         </div>
                     </div>

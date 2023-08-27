@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --playback-percentage: 0%
+}
+
 ::-webkit-scrollbar {
     width: .75rem;
 }

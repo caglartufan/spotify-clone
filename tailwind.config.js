@@ -11,7 +11,11 @@ module.exports = {
         'highlight': '#1a1a1a',
         'tinted': 'rgba(255, 255, 255, 0.07)',
         'tinted-highlight': 'rgba(255, 255, 255, 0.1)',
+        'tinted-press': 'rgba(255, 255, 255, 0.04)',
         'bright-accent': '#1ed760'
+      },
+      fontSize: {
+        '2xs': '0.6875rem'
       },
       borderRadius: {
         '4xl': '2rem'
