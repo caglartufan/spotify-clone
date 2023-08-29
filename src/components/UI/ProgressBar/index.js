@@ -1,45 +1,109 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const ProgressBar = props => {
     const {
-        initialProgressValue,
-        progressVariable,
-        currentValue,
+        minValue,
         maxValue,
+        initialValue,
+        onProgressChange,
         className: customClassName,
         ...progressBarProps
     } = props;
-    const [isClicked, setIsClicked] = useState(false);
-    const [progressValue, setProgressValue] = useState(initialProgressValue);
+    const [progress, setProgress] = useState(initialValue || minValue);
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStart, setDragStart] = useState(0);
+    const progressBarRef = useRef();
 
-    let className = `w-full h-1 rounded-sm bg-white/30 absolute top-1/2 -translate-y-1/2 before:block before:h-full before:w-[${progressVariable}] before:rounded-sm before:bg-white before:hover:bg-bright-accent after:hidden after:h-3 after:w-3 after:bg-white after:rounded-full after:absolute after:left-[${progressVariable}] after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:hover:block`;
+    const percentage = progress / maxValue;
+    const percentageAsUnit = (percentage * 100) + '%';
+
+    let className = 'w-full h-1 rounded-sm bg-white/30 absolute top-1/2 -translate-y-1/2';
 
     if(customClassName) {
         className = `${className} ${customClassName}`;
     }
 
-    const changeProgressHandler = useCallback((event) => {
-        if(!isClicked) {
+    const bulletDragStartHandler = useCallback((event) => {
+        // Enable dragging bullet for future mouse movement while clicked on progress bar
+        setIsDragging(true);
+
+        progressBarRef.current.setPointerCapture(event.pointerId);
+
+        // Handle progress change for clicked position on progress bar
+        const clientX = event.clientX;
+        const boundingClientX = progressBarRef.current.getClientRects()[0].x;
+        const offsetX = clientX - boundingClientX;
+        const clientWidth = progressBarRef.current.clientWidth;
+        const clickedValue = Math.round((offsetX / clientWidth) * (maxValue - minValue));
+
+        setProgress(clickedValue);
+        onProgressChange(clickedValue);
+    }, [minValue, maxValue, onProgressChange]);
+
+    const bulletDragEndHandler = useCallback((event) => {
+        // Disable dragging bullet
+        setIsDragging(false);
+
+        progressBarRef.current.releasePointerCapture(event.pointerId);
+    }, []);
+
+    const bulletDragHandler = useCallback(({ clientX }) => {
+        if(clientX === 0 || !isDragging) {
             return;
         }
 
-        const offsetX = event.nativeEvent.offsetX;
-        console.log(offsetX);
-    }, [isClicked]);
+        // Handle valid bullet dragging
+        const draggedDistance = clientX - dragStart;
+        const progressBarWidth = progressBarRef.current.clientWidth;
+        const draggedDistanceRatioToProgressBarWidth = draggedDistance / progressBarWidth;
+        const ratioAsProgressValue = draggedDistanceRatioToProgressBarWidth * (maxValue - minValue);
+        const updatedProgress = Math.round(progress + ratioAsProgressValue);
+
+        let newValue = updatedProgress;
+
+        if(updatedProgress < minValue) {
+            newValue = minValue;
+        } else if(updatedProgress > maxValue) {
+            newValue = maxValue;
+        }
+
+        setProgress(newValue);
+        onProgressChange(newValue);
+
+    }, [isDragging, dragStart, maxValue, minValue, onProgressChange, progress]);
+
+    useEffect(() => {
+        const progressBarClientX = progressBarRef.current.getClientRects()[0].x;
+        const progressBarClientWidth = progressBarRef.current.clientWidth;
+        const currentBulletClientX = progressBarClientX + (percentage * progressBarClientWidth);
+
+        setDragStart(currentBulletClientX);
+    }, [percentage]);
 
     return (
         <div
             className="flex-1 h-3 relative"
-            style={{ [progressVariable]: progressValue }}
+            onPointerDown={bulletDragStartHandler}
+            onPointerUp={bulletDragEndHandler}
+            onPointerMove={bulletDragHandler}
             {...progressBarProps}
         >
-            <div className="w-full h-full">
+            <div
+                className="group w-full h-full"
+            >
                 <div
                     className={className}
-                    onMouseDown={() => setIsClicked(true)}
-                    onMouseUp={() => setIsClicked(false)}
-                    onMouseMove={changeProgressHandler}
-                ></div>
+                    ref={progressBarRef}
+                >
+                    <div
+                        className="block h-full rounded-sm bg-white group-hover:bg-bright-accent"
+                        style={{ width: percentageAsUnit }}
+                    ></div>
+                    <div
+                        className="hidden h-3 w-3 bg-white rounded-full absolute top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none group-hover:block"
+                        style={{ left: percentageAsUnit }}
+                    ></div>
+                </div>
             </div>
         </div>
     );

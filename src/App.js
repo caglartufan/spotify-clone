@@ -1,7 +1,8 @@
-import './App.css';
 import Main from './layout/Main';
 import NowPlaying from './layout/NowPlaying';
 import Sidebar from './layout/Sidebar';
+
+import './App.css';
 
 function App() {
 	return (

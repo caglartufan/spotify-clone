@@ -17,15 +17,20 @@ import Button from '../../components/UI/Button';
 import Icon from '../../components/UI/Icon';
 import Link from '../../components/UI/Link';
 import ProgressBar from '../../components/UI/ProgressBar';
+import { formatSeconds } from '../../utils/helpers';
 
 const NowPlaying = props => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const nowPlayingCurrentDuration = 17;
-    const nowPlayingTotalDuration = 135;
-    const nowPlayingPercantage = ((nowPlayingCurrentDuration / nowPlayingTotalDuration) * 100) + '%';
+    const [currentPlaybackValue, setCurrentPlaybackValue] = useState(0);
+    const minPlaybackValue = 0;
+    const maxPlaybackValue = 135;
 
     const togglePlayModeHandler = useCallback(() => {
         setIsPlaying(prevState => !prevState);
+    }, []);
+
+    const playbackProgressChangeHandler = useCallback((changedValue) => {
+        setCurrentPlaybackValue(changedValue);
     }, []);
 
     return (
@@ -89,21 +94,18 @@ const NowPlaying = props => {
                                 </Button>
                             </div>
                         </div>
-                        <div
-                            className="flex items-center gap-x-2"
-                            style={{ '--playback-percentage': nowPlayingPercantage }}
-                        >
+                        <div className="flex items-center gap-x-2">
                             <div className="min-w-[40px] text-2xs text-secondary text-right">
-                                0:17
+                                {formatSeconds(currentPlaybackValue)}
                             </div>
                             <ProgressBar
-                                currentValue={nowPlayingCurrentDuration}
-                                maxValue={nowPlayingTotalDuration}
-                                initialProgressValue={nowPlayingPercantage}
-                                progressVariable="--playback-percentage"
+                                minValue={minPlaybackValue}
+                                maxValue={maxPlaybackValue}
+                                initialValue={currentPlaybackValue}
+                                onProgressChange={playbackProgressChangeHandler}
                             />
                             <div className="min-w-[40px] text-2xs text-secondary text-left">
-                                2:15
+                                {formatSeconds(maxPlaybackValue)}
                             </div>
                         </div>
                     </div>
