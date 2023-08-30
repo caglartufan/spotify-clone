@@ -10,6 +10,15 @@ import { ReactComponent as PlayIcon } from '../../assets/icons/play.svg';
 import { ReactComponent as PauseIcon } from '../../assets/icons/pause.svg';
 import { ReactComponent as NextIcon } from '../../assets/icons/next.svg';
 import { ReactComponent as RepeatIcon } from '../../assets/icons/repeat.svg';
+import { ReactComponent as NowPlayingViewIcon } from '../../assets/icons/now-playing-view.svg';
+import { ReactComponent as LyricsIcon } from '../../assets/icons/lyrics.svg';
+import { ReactComponent as QueueIcon } from '../../assets/icons/queue.svg';
+import { ReactComponent as ConnectToDeviceIcon } from '../../assets/icons/connect-to-device.svg';
+import { ReactComponent as VolumeOffIcon } from '../../assets/icons/volume-off.svg';
+import { ReactComponent as VolumeLowIcon } from '../../assets/icons/volume-low.svg';
+import { ReactComponent as VolumeMediumIcon } from '../../assets/icons/volume-medium.svg';
+import { ReactComponent as VolumeHighIcon } from '../../assets/icons/volume-high.svg';
+import { ReactComponent as FullScreenIcon } from '../../assets/icons/full-screen.svg';
 
 import iHateYouILoveYouImage from '../../assets/images/i-hate-you-i-love-you.jfif';
 
@@ -21,9 +30,14 @@ import { formatSeconds } from '../../utils/helpers';
 
 const NowPlaying = props => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [currentPlaybackValue, setCurrentPlaybackValue] = useState(0);
+
     const minPlaybackValue = 0;
     const maxPlaybackValue = 135;
+    const [currentPlaybackValue, setCurrentPlaybackValue] = useState(minPlaybackValue);
+
+    const minVolume = 0;
+    const maxVolume = 100;
+    const [currentVolume, setCurrentVolume] = useState(maxVolume);
 
     const togglePlayModeHandler = useCallback(() => {
         setIsPlaying(prevState => !prevState);
@@ -32,6 +46,24 @@ const NowPlaying = props => {
     const playbackProgressChangeHandler = useCallback((changedValue) => {
         setCurrentPlaybackValue(changedValue);
     }, []);
+
+    const volumeProgressChangeHandler = useCallback((changedValue) => {
+        setCurrentVolume(changedValue);
+    }, []);
+
+    let volumeIcon = VolumeHighIcon;
+
+    if(currentVolume < 66) {
+        volumeIcon = VolumeMediumIcon;
+    }
+    
+    if(currentVolume < 33) {
+        volumeIcon = VolumeLowIcon;
+    }
+    
+    if(currentVolume === 0) {
+        volumeIcon = VolumeOffIcon;
+    }
 
     return (
         <div className="col-span-2">
@@ -110,8 +142,33 @@ const NowPlaying = props => {
                         </div>
                     </div>
                 </div>
-                <div className="min-w-[11.25rem] w-[30%]">
-3
+                <div className="flex justify-end items-center min-w-[11.25rem] w-[30%]">
+                    <Button className="text-subdued px-2 active:opacity-70">
+                        <Icon component={NowPlayingViewIcon} />
+                    </Button>
+                    <Button className="text-subdued px-2 active:opacity-70">
+                        <Icon component={LyricsIcon} />
+                    </Button>
+                    <Button className="text-subdued px-2 active:opacity-70">
+                        <Icon component={QueueIcon} />
+                    </Button>
+                    <Button className="text-subdued px-2 active:opacity-70 cursor-default">
+                        <Icon component={ConnectToDeviceIcon} />
+                    </Button>
+                    <div className="flex items-center w-[125px] me-2">
+                        <Button className="text-subdued px-2 active:opacity-70">
+                            <Icon component={volumeIcon} />
+                        </Button>
+                        <ProgressBar
+                            minValue={minVolume}
+                            maxValue={maxVolume}
+                            initialValue={currentVolume}
+                            onProgressChange={volumeProgressChangeHandler}
+                        />
+                    </div>
+                    <Button className="text-subdued px-2 active:opacity-70 cursor-default">
+                        <Icon component={FullScreenIcon} />
+                    </Button>
                 </div>
             </footer>
         </div>

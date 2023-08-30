@@ -12,7 +12,8 @@ module.exports = {
         'tinted': 'rgba(255, 255, 255, 0.07)',
         'tinted-highlight': 'rgba(255, 255, 255, 0.1)',
         'tinted-press': 'rgba(255, 255, 255, 0.04)',
-        'bright-accent': '#1ed760'
+        'bright-accent': '#1ed760',
+        'subdued': '#a7a7a7'
       },
       fontSize: {
         '2xs': '0.6875rem'
