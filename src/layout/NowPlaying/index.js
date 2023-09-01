@@ -67,7 +67,7 @@ const NowPlaying = props => {
 
     return (
         <div className="col-span-2">
-            <footer className="flex px-2 pt-2">
+            <footer className="flex pt-2 ps-2">
                 <div className="min-w-[11.25rem] w-[30%]">
                     <div className="flex items-center">
                         <div className="relative group rounded overflow-hidden">
@@ -127,7 +127,7 @@ const NowPlaying = props => {
                             </div>
                         </div>
                         <div className="flex items-center gap-x-2">
-                            <div className="min-w-[40px] text-2xs text-secondary text-right">
+                            <div className="min-w-[40px] text-2xs leading-[17.6px] text-secondary text-right">
                                 {formatSeconds(currentPlaybackValue)}
                             </div>
                             <ProgressBar
@@ -136,7 +136,7 @@ const NowPlaying = props => {
                                 initialValue={currentPlaybackValue}
                                 onProgressChange={playbackProgressChangeHandler}
                             />
-                            <div className="min-w-[40px] text-2xs text-secondary text-left">
+                            <div className="min-w-[40px] text-2xs leading-[17.6px] text-secondary text-left">
                                 {formatSeconds(maxPlaybackValue)}
                             </div>
                         </div>
