@@ -7,7 +7,7 @@ const Button = props => {
         ...buttonProps
     } = props;
 
-    let className = 'transition ease-linear duration-200';
+    let className = 'transition ease-linear duration-200 disabled:cursor-not-allowed';
 
     if(tinted) {
         className = `text-white text-sm leading-6 px-3 py-1 rounded-4xl bg-tinted hover:bg-tinted-highlight active:bg-tinted-press ${className}`;
@@ -16,7 +16,7 @@ const Button = props => {
     }
 
     if(rounded) {
-        className = `${className} !text-white rounded-full p-2 hover:bg-highlight hover:transition-none active:bg-black`;
+        className = `${className} !text-white rounded-full p-2 hover:bg-highlight hover:transition-none active:bg-black disabled:opacity-60`;
     }
 
     if(customClassName) {
