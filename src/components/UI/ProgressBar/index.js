@@ -69,7 +69,6 @@ const ProgressBar = props => {
 
         setProgress(newValue);
         onProgressChange(newValue);
-
     }, [isDragging, dragStart, maxValue, minValue, onProgressChange, progress]);
 
     useEffect(() => {
