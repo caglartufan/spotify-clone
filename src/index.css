@@ -7,9 +7,13 @@
 }
 
 ::-webkit-scrollbar {
+    width: 0;
+}
+
+/* ::-webkit-scrollbar {
     width: .75rem;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: inherit;
-}
+} */

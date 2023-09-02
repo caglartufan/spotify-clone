@@ -73,7 +73,7 @@ const libraryItems = [
 
 const YourLibrary = props => {
     return (
-        <Card className="flex-auto flex flex-col overflow-y-auto">
+        <Card className="flex-1 min-h-0 flex flex-col overflow-hidden">
             <div className="flex flex-col gap-y-4 px-4 py-2 shadow-standart z-10">
                 <header className="flex items-center">
                     <div className="flex-1">
