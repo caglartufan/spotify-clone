@@ -2,8 +2,6 @@ import { useState, useRef } from 'react';
 
 import './style.css';
 
-let interval;
-
 const Scrollable = props => {
     const {
         className: customClassName,
@@ -32,13 +30,23 @@ const Scrollable = props => {
 
         const scrollableAreaClientHeight = scrollableAreaRef.current.clientHeight;
         const scrollableAreaScrollHeight = scrollableAreaRef.current.scrollHeight;
+
+        if(scrollableAreaClientHeight === scrollableAreaScrollHeight) {
+            return;
+        }
+
         const verticalScrollbarThumbHeight = (scrollableAreaClientHeight / scrollableAreaScrollHeight) * 100;
+
         verticalScrollbarThumbRef.current.style.height = verticalScrollbarThumbHeight + '%';
 
         setIsHidden(false);
     }
 
     const hideScrollbarHandler = () => {
+        if(isHidden) {
+            return;
+        }
+
         if(delayTimeout) {
             clearTimeout(delayTimeout);
         }

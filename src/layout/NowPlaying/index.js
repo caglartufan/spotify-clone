@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import { ReactComponent as AngleUpIcon } from '../../assets/icons/angle-up.svg';
 import { ReactComponent as HeartEmptyIcon } from '../../assets/icons/heart-empty.svg';
@@ -30,6 +30,7 @@ import { formatSeconds } from '../../utils/helpers';
 
 const NowPlaying = props => {
     const [isPlaying, setIsPlaying] = useState(false);
+    const [isLiked, setIsLiked] = useState(true);
 
     const minPlaybackValue = 0;
     const maxPlaybackValue = 135;
@@ -42,6 +43,10 @@ const NowPlaying = props => {
 
     const togglePlayModeHandler = () => {
         setIsPlaying(prevState => !prevState);
+    };
+
+    const toggleLikeStateHandler = () => {
+        setIsLiked(prev => !prev);
     };
 
     const playbackProgressChangeHandler = (changedValue) => {
@@ -93,8 +98,11 @@ const NowPlaying = props => {
                             </Link>
                         </div>
                         <div>
-                            <Button className="!text-bright-accent px-2 hover:scale-[1.04] active:!text-neutral-400 active:scale-100 active:opacity-70">
-                                <Icon component={HeartFullIcon} />
+                            <Button
+                                className={`${isLiked ? '!text-bright-accent' : 'text-neutral-400'} px-2 hover:scale-[1.04] active:!text-neutral-400 active:scale-100 active:opacity-70`}
+                                onClick={toggleLikeStateHandler}
+                            >
+                                <Icon component={isLiked ? HeartFullIcon : HeartEmptyIcon} />
                             </Button>
                             <Button className="px-2 cursor-default">
                                 <Icon component={PictureInPictureIcon} />

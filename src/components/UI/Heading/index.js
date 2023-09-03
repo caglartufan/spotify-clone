@@ -3,12 +3,11 @@ const Heading = props => {
         secondary,
         tertiary,
         className: customClassName,
-        children,
-        ...headingProps
+        children
     } = props;
 
     if(secondary) {
-        let className = 'text-3.5xl leading-none font-bold overflow-ellipsis whitespace-nowrap';
+        let className = 'text-3.5xl leading-3.5 font-bold overflow-ellipsis whitespace-nowrap';
 
         if(customClassName) {
             className = `${className} ${customClassName}`;
