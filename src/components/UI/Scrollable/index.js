@@ -2,6 +2,8 @@ import { useState, useRef } from 'react';
 
 import './style.css';
 
+let interval;
+
 const Scrollable = props => {
     const {
         className: customClassName,
@@ -14,6 +16,7 @@ const Scrollable = props => {
     const [isHidden, setIsHidden] = useState(true);
     const [delayTimeout, setDelayTimeout] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
+    const [isScrolling, setIsScrolling] = useState(false);
     const [dragStart, setDragStart] = useState(0);
 
     let className = 'scrollable-content';
@@ -47,7 +50,7 @@ const Scrollable = props => {
         setDelayTimeout(timeoutObject);
     };
 
-    const scrollHandler = event => {
+    const viewportScrollHandler = event => {
         const clientHeight = event.target.clientHeight;
         const scrollHeight = event.target.scrollHeight;
         const scrollTop = event.target.scrollTop;
@@ -64,9 +67,9 @@ const Scrollable = props => {
         verticalScrollbarRef.current.setPointerCapture(event.pointerId);
 
         // Handle drag start
-        const clientY = event.clientY;
+        const layerY = event.layerY;
         
-        setDragStart(clientY);
+        setDragStart(layerY);
     };
 
     const scrollbarDragEndHandler = event => {
@@ -77,19 +80,52 @@ const Scrollable = props => {
     };
 
     const scrollbarDragHandler = event => {
-        const clientY = event.clientY;
+        const layerY = event.nativeEvent.layerY;
         const movementY = event.movementY;
         const scrollableAreaClientHeight = scrollableAreaRef.current.clientHeight;
         const scrollableAreaScrollHeight = scrollableAreaRef.current.scrollHeight;
         const verticalScrollbarThumbClientHeight = verticalScrollbarThumbRef.current.clientHeight;
         const verticalScrollbarThumbHeightPercentage = verticalScrollbarThumbRef.current.style.height.match(/(.*)%/)[1] / 100;
 
-        if(!isDragging || clientY < 0 || clientY > scrollableAreaClientHeight) {
+        if(!isDragging || layerY < 0 || layerY > scrollableAreaClientHeight) {
             return;
         }
 
         const scrollTopIncrement = movementY * (verticalScrollbarThumbHeightPercentage / verticalScrollbarThumbClientHeight) * scrollableAreaScrollHeight;
         scrollableAreaRef.current.scrollTop += scrollTopIncrement;
+    };
+
+    const scrollToHandler = event => {
+        const layerY = event.nativeEvent.layerY;
+        const scrollableAreaClientHeight = scrollableAreaRef.current.clientHeight;
+        const scrollableAreaScrollHeight = scrollableAreaRef.current.scrollHeight;
+        const verticalScrollbarThumbClientHeight = verticalScrollbarThumbRef.current.clientHeight;
+        const verticalScrollbarThumbHalfClientHeight = verticalScrollbarThumbClientHeight / 2;
+        const verticalScrollbarThumbHeightPercentage = verticalScrollbarThumbRef.current.style.height.match(/(.*)%/)[1] / 100;
+
+        if(event.target === verticalScrollbarThumbRef.current || layerY < 0 || layerY > scrollableAreaClientHeight) {
+            return;
+        }
+
+        const min = verticalScrollbarThumbHalfClientHeight;
+        const max = scrollableAreaClientHeight - (verticalScrollbarThumbHalfClientHeight);
+
+        let translateY = layerY;
+
+        if(translateY < min) {
+            translateY = min;
+        } else if(translateY > max) {
+            translateY = max;
+        }
+
+        const newScrollTop = (translateY - verticalScrollbarThumbHalfClientHeight) * (verticalScrollbarThumbHeightPercentage / verticalScrollbarThumbClientHeight) * scrollableAreaScrollHeight;
+        scrollableAreaRef.current.scrollTo({
+            top: newScrollTop,
+            left: 0,
+            behavior: 'smooth'
+        });
+
+        setIsScrolling(true);
     };
 
     return (
@@ -101,7 +137,7 @@ const Scrollable = props => {
             <div className="scrollable-padding">
                 <div
                     className="scrollable-viewport"
-                    onScroll={scrollHandler}
+                    onScroll={viewportScrollHandler}
                     ref={scrollableAreaRef}
                 >
                     <div className={className}>
@@ -115,7 +151,10 @@ const Scrollable = props => {
                 onPointerUp={scrollbarDragEndHandler}
                 ref={verticalScrollbarRef}
             >
-                <div className="scrollable-scrollbar__track">
+                <div
+                    className="scrollable-scrollbar__track"
+                    onPointerDown={scrollToHandler}
+                >
                     <div
                         className="scrollable-scrollbar__thumb"
                         ref={verticalScrollbarThumbRef}

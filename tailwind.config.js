@@ -16,7 +16,8 @@ module.exports = {
         'subdued': '#a7a7a7'
       },
       fontSize: {
-        '2xs': '0.6875rem'
+        '2xs': '0.6875rem',
+        '3.5xl': '2rem'
       },
       borderRadius: {
         '4xl': '2rem'

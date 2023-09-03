@@ -3,12 +3,26 @@ import { ReactComponent as AngleRightIcon } from '../../assets/icons/angle-right
 import { ReactComponent as InstallIcon } from '../../assets/icons/install.svg';
 
 import profilePicture from '../../assets/images/profile-picture.jfif';
+import elementEightyArtistImg from '../../assets/images/element-eighty-artist.jfif';
+import untouchablesAlbumImg from '../../assets/images/untouchables-album.jfif';
+import fatOfTheLandAlbumImg from '../../assets/images/fat-of-the-land-album.jfif';
+import weWontBeAlonePlaylistImg from '../../assets/images/we-wont-be-alone-playlist.jfif';
+import dvrstArtistImg from '../../assets/images/dvrst-artist.jfif';
+import chillsPlaylistImg from '../../assets/images/chills-playlist.jfif';
 
 import Card from '../../components/UI/Card';
 import Scrollable from '../../components/UI/Scrollable';
 import Button from '../../components/UI/Button';
 import Icon from '../../components/UI/Icon';
 import Link from '../../components/UI/Link';
+import Heading from '../../components/UI/Heading';
+import PlayLists from '../../components/Media/PlayLists';
+
+const playListItems = [
+    {
+        coverImage:
+    }
+];
 
 const Main = props => {
     return (
@@ -38,8 +52,13 @@ const Main = props => {
                             </Button>
                         </div>
                     </header>
-                    <div className="relative z-10">
-                        {Array.from(new Array(100)).map((e, i) => <p className="z-[1]">MAIN {i}</p>)}
+                    <div className="flex flex-col gap-y-6 pt-2 px-6 z-10 relative">
+                        <section>
+                            <Heading className="mb-4" secondary>
+                                Good evening
+                            </Heading>
+                            <PlayLists />
+                        </section>
                     </div>
                 </Scrollable>
             </div>

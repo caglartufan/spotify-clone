@@ -80,7 +80,6 @@
 .scrollable-scrollbar__thumb {
     display: block;
     width: 100%;
-    min-height: 30px;
     position: absolute;
     background-color: rgba(255, 255, 255, .3);
     transition: background-color .2s ease;
