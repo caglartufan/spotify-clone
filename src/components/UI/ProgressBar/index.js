@@ -4,12 +4,12 @@ const ProgressBar = props => {
     const {
         minValue,
         maxValue,
-        initialValue,
+        value,
         onProgressChange,
         className: customClassName,
         ...progressBarProps
     } = props;
-    const [progress, setProgress] = useState(initialValue || minValue);
+    const progress = value || minValue;
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState(0);
     const progressBarRef = useRef();
@@ -23,7 +23,7 @@ const ProgressBar = props => {
         className = `${className} ${customClassName}`;
     }
 
-    const bulletDragStartHandler = useCallback((event) => {
+    const bulletDragStartHandler = (event) => {
         // Enable dragging bullet for future mouse movement while clicked on progress bar
         setIsDragging(true);
 
@@ -36,18 +36,17 @@ const ProgressBar = props => {
         const clientWidth = progressBarRef.current.clientWidth;
         const clickedValue = Math.round((offsetX / clientWidth) * (maxValue - minValue));
 
-        setProgress(clickedValue);
         onProgressChange(clickedValue);
-    }, [minValue, maxValue, onProgressChange]);
+    };
 
-    const bulletDragEndHandler = useCallback((event) => {
+    const bulletDragEndHandler = (event) => {
         // Disable dragging bullet
         setIsDragging(false);
 
         progressBarRef.current.releasePointerCapture(event.pointerId);
-    }, []);
+    };
 
-    const bulletDragHandler = useCallback(({ clientX }) => {
+    const bulletDragHandler = ({ clientX }) => {
         if(clientX === 0 || !isDragging) {
             return;
         }
@@ -67,9 +66,8 @@ const ProgressBar = props => {
             newValue = maxValue;
         }
 
-        setProgress(newValue);
         onProgressChange(newValue);
-    }, [isDragging, dragStart, maxValue, minValue, onProgressChange, progress]);
+    };
 
     useEffect(() => {
         const progressBarClientX = progressBarRef.current.getClientRects()[0].x;

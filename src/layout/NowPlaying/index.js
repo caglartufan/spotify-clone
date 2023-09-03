@@ -38,18 +38,24 @@ const NowPlaying = props => {
     const minVolume = 0;
     const maxVolume = 100;
     const [currentVolume, setCurrentVolume] = useState(maxVolume);
+    const [volumeBeforeToggle, setVolumeBeforeToggle] = useState(0);
 
-    const togglePlayModeHandler = useCallback(() => {
+    const togglePlayModeHandler = () => {
         setIsPlaying(prevState => !prevState);
-    }, []);
+    };
 
-    const playbackProgressChangeHandler = useCallback((changedValue) => {
+    const playbackProgressChangeHandler = (changedValue) => {
         setCurrentPlaybackValue(changedValue);
-    }, []);
+    };
 
-    const volumeProgressChangeHandler = useCallback((changedValue) => {
+    const volumeProgressChangeHandler = (changedValue) => {
         setCurrentVolume(changedValue);
-    }, []);
+    };
+
+    const toggleVolumeHandler = () => {
+        setVolumeBeforeToggle(currentVolume);
+        setCurrentVolume(volumeBeforeToggle);
+    };
 
     let volumeIcon = VolumeHighIcon;
 
@@ -133,7 +139,7 @@ const NowPlaying = props => {
                             <ProgressBar
                                 minValue={minPlaybackValue}
                                 maxValue={maxPlaybackValue}
-                                initialValue={currentPlaybackValue}
+                                value={currentPlaybackValue}
                                 onProgressChange={playbackProgressChangeHandler}
                             />
                             <div className="min-w-[40px] text-2xs leading-[17.6px] text-secondary text-left">
@@ -156,13 +162,16 @@ const NowPlaying = props => {
                         <Icon component={ConnectToDeviceIcon} />
                     </Button>
                     <div className="flex items-center w-[125px] me-2">
-                        <Button className="text-subdued px-2 active:opacity-70">
+                        <Button
+                            className="text-subdued px-2 active:opacity-70"
+                            onClick={toggleVolumeHandler}
+                        >
                             <Icon component={volumeIcon} />
                         </Button>
                         <ProgressBar
                             minValue={minVolume}
                             maxValue={maxVolume}
-                            initialValue={currentVolume}
+                            value={currentVolume}
                             onProgressChange={volumeProgressChangeHandler}
                         />
                     </div>

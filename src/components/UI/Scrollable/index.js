@@ -15,7 +15,6 @@ const Scrollable = props => {
     const [delayTimeout, setDelayTimeout] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState(0);
-    const [lastDraggedDistance, setLastDraggedDistance] = useState(0);
 
     let className = 'scrollable-content';
 
@@ -54,6 +53,7 @@ const Scrollable = props => {
         const scrollTop = event.target.scrollTop;
         const scrolledPercentage = scrollTop / scrollHeight;
         const scrolledPercentageInPixels = clientHeight * scrolledPercentage;
+        
         verticalScrollbarThumbRef.current.style.transform = `translateY(${scrolledPercentageInPixels}px)`;
     };
 
@@ -65,8 +65,6 @@ const Scrollable = props => {
 
         // Handle drag start
         const clientY = event.clientY;
-
-        console.log(clientY);
         
         setDragStart(clientY);
     };
@@ -76,55 +74,22 @@ const Scrollable = props => {
         setIsDragging(false);
 
         verticalScrollbarRef.current.releasePointerCapture(event.pointerId);
-
-        setLastDraggedDistance(0);
     };
 
     const scrollbarDragHandler = event => {
         const clientY = event.clientY;
+        const movementY = event.movementY;
+        const scrollableAreaClientHeight = scrollableAreaRef.current.clientHeight;
+        const scrollableAreaScrollHeight = scrollableAreaRef.current.scrollHeight;
+        const verticalScrollbarThumbClientHeight = verticalScrollbarThumbRef.current.clientHeight;
+        const verticalScrollbarThumbHeightPercentage = verticalScrollbarThumbRef.current.style.height.match(/(.*)%/)[1] / 100;
 
-        if(!isDragging) {
+        if(!isDragging || clientY < 0 || clientY > scrollableAreaClientHeight) {
             return;
         }
 
-        const draggedDistance = clientY - dragStart;
-        const currentTransform = verticalScrollbarThumbRef.current.style.transform;
-        const scrollableAreaClientHeight = scrollableAreaRef.current.clientHeight;
-        const verticalScrollbarThumbClientHeight = verticalScrollbarThumbRef.current.clientHeight;
-        const min = 0;
-        const max = scrollableAreaClientHeight - verticalScrollbarThumbClientHeight;
-        
-        let translateY = draggedDistance;
-
-        if(currentTransform) {
-            const translateYMatches = currentTransform.match(/translateY\((.*)px\)/);
-            console.log(translateYMatches);
-            translateY += parseFloat(translateYMatches?.[1]) - lastDraggedDistance;
-        }
-
-        if(translateY <= min) {
-            translateY = min;
-        } else if(translateY >= max) {
-            translateY = max;
-        }
-
-        // console.log(draggedDistance, translateY);
-        // const min = 0;
-        // const max = scrollableAreaClientHeight - verticalScrollbarThumbClientHeight;
-
-        // let translateY = clientY - (verticalScrollbarThumbClientHeight / 2);
-
-        // if(translateY <= 0) {
-        //     translateY = 0;
-        // }
-        // if(translateY >= max) {
-        //     translateY = max;
-        // }
-
-        verticalScrollbarThumbRef.current.style.transform = `translateY(${translateY}px)`;
-        setLastDraggedDistance(draggedDistance);
-
-        // console.log(translateY);
+        const scrollTopIncrement = movementY * (verticalScrollbarThumbHeightPercentage / verticalScrollbarThumbClientHeight) * scrollableAreaScrollHeight;
+        scrollableAreaRef.current.scrollTop += scrollTopIncrement;
     };
 
     return (
