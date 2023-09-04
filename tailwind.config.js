@@ -29,6 +29,7 @@ module.exports = {
       boxShadow: {
         'standart': '0 6px 10px rgba(0, 0, 0, .6)',
         'library-cover': '0 4px 60px rgba(0, 0, 0, .5)',
+        'playlist-cover': '0 8px 24px rgba(0, 0, 0, .5)',
         'action-button': '0 8px 8px rgba(0, 0, 0, .3)'
       },
       gridTemplateRows: {
@@ -36,6 +37,9 @@ module.exports = {
       },
       gridTemplateColumns: {
         'layout': '20rem auto'
+      },
+      transitionProperty: {
+        'opacity-and-transform': 'opacity, transform'
       }
     },
   },

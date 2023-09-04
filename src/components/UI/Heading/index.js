@@ -21,8 +21,14 @@ const Heading = props => {
     }
 
     if(tertiary) {
+        let className = 'text-2xl leading-3.5 font-bold overflow-ellipsis whitespace-nowrap';
+
+        if(customClassName) {
+            className = `${className} ${customClassName}`;
+        }
+
         return (
-            <h3>
+            <h3 className={className}>
                 {children}
             </h3>
         );
