@@ -10,11 +10,11 @@ HTML, CSS, JS, Tailwind.css, React, Redux
 
 ## :art: Images from project
 
-Images will be added soon
+![spotify-clone](https://github.com/caglartufan/spotify-clone/assets/37420200/d6121c2c-4857-4033-9ec1-3c363705567b)
 
 ## :dart: Gains
 
 - :white_check_mark: Practiced React, Tailwind.css and Redux state management tool
-- :white_check_mark: Built complex components such as volume and play progress bars.
+- :white_check_mark: Built complex components such as volume and play progress bars, custom scroll bars.
 - :white_check_mark: Learned SVG icon usage with React
 - :white_check_mark: Experienced auto height and scroll overflowing content layouts
